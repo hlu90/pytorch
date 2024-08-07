@@ -59,6 +59,12 @@ runs:
           aws ecr get-login-password --region "$AWS_DEFAULT_REGION" | docker login --username AWS \
               --password-stdin "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
 
+          # For LF Runners we need to make sure we also login to Meta's ECR docker registry too.
+          if [ "$AWS_ACCOUNT_ID" != "308535385114" ] ; then
+              aws ecr get-login-password --region "$AWS_DEFAULT_REGION" | docker login --username AWS \
+                  --password-stdin "308535385114.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
+          fi
+
     - name: Preserve github env variables for use in docker
       shell: bash
       run: |
